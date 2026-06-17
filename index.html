@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Foodist — Pedir comida, simplemente.</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { leaf: 'oklch(0.62 0.13 150)' },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; font-weight: 200; letter-spacing: -0.01em; }
+
+        /* ── Nav fijo ── */
+        header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        body > main { padding-top: 80px; }
+
+        /* ── BlurText: palabras ── */
+        @keyframes blurWordIn {
+            0%   { filter: blur(12px); opacity: 0; transform: translateY(20px); }
+            60%  { filter: blur(2px);  opacity: 0.8; transform: translateY(-2px); }
+            100% { filter: blur(0px);  opacity: 1; transform: translateY(0); }
+        }
+        .bw {
+            display: inline-block;
+            opacity: 0; filter: blur(12px); transform: translateY(20px);
+            will-change: transform, filter, opacity;
+        }
+        .bw.in { animation: blurWordIn 0.65s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+        /* ── BlurReveal: bloques (p, div, img, etc.) ── */
+        @keyframes blurBlockIn {
+            0%   { filter: blur(8px); opacity: 0; transform: translateY(24px); }
+            100% { filter: blur(0px); opacity: 1; transform: translateY(0); }
+        }
+        .br {
+            opacity: 0; filter: blur(8px); transform: translateY(24px);
+            will-change: transform, filter, opacity;
+        }
+        .br.in { animation: blurBlockIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+        /* ── GradualBlur: fondo difuminado en bordes de sección ── */
+        .gradual-blur-wrap { position: relative; overflow: hidden; }
+        .gb-top, .gb-bottom {
+            position: absolute; left: 0; right: 0; pointer-events: none; z-index: 10;
+        }
+        .gb-top    { top: 0; }
+        .gb-bottom { bottom: 0; }
+        .gb-layer  { position: absolute; inset: 0; }
+    </style>
+</head>
+<body class="bg-white text-neutral-900 antialiased">
+
+    <!-- Nav FIJO -->
+    <header>
+        <div style="max-width:72rem;margin:0 auto;padding:1.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;">
+            <div class="flex items-center gap-3 text-sm tracking-[0.2em] uppercase font-extralight">
+                <img src="https://lh3.googleusercontent.com/d/14i6nHz3QhwcJXpfDAPT2Z4VP2Yv5t5Ff" alt="Prime Foodist Logo" class="h-8 w-auto">
+                <span>Prime Foodist</span>
+            </div>
+            <nav class="hidden md:flex gap-10 text-sm font-extralight text-neutral-500">
+                <a href="#about"    class="hover:text-neutral-900 transition">Sobre</a>
+                <a href="#process"  class="hover:text-neutral-900 transition">Proceso</a>
+                <a href="#features" class="hover:text-neutral-900 transition">Características</a>
+                <a href="#tech"     class="hover:text-neutral-900 transition">Tecnología</a>
+            </nav>
+            <a href="#download" class="text-sm font-light px-5 py-2 rounded-full border border-neutral-200 hover:border-neutral-900 transition">
+                Descargar
+            </a>
+        </div>
+    </header>
+
+    <main class="min-h-screen">
+
+        <!-- ── Hero ── -->
+        <section class="max-w-6xl mx-auto px-6 md:px-10 pt-12 md:pt-24 pb-20 md:pb-32 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h1 id="hero-h1" class="text-5xl md:text-7xl leading-[1.05] font-thin tracking-tight" style="display:flex;flex-wrap:wrap;gap:0 0.3em;"></h1>
+                <p class="br mt-8 max-w-md text-lg font-extralight text-neutral-500 leading-relaxed">
+                    Prime Foodist es una app móvil que facilita la búsqueda y el pedido de comida
+                    de forma rápida, clara y cómoda. Diseñada para adaptarse a tu ritmo de vida.
+                </p>
+                <div class="br mt-10 flex gap-4">
+                    <a href="#download" class="px-7 py-3 rounded-full bg-neutral-900 text-white text-sm font-light hover:bg-neutral-700 transition">Descubrir la app</a>
+                    <a href="#features" class="px-7 py-3 rounded-full text-sm font-light text-neutral-700 hover:text-neutral-900 transition">Saber más →</a>
+                </div>
+            </div>
+            <div class="br relative flex justify-center">
+                <img src="https://lh3.googleusercontent.com/d/1TEBnXO_EycRN7RnIHGUm2vsEALXd3hVR" alt="Prime Foodist App" class="w-full max-w-[320px] md:max-w-[400px] drop-shadow-2xl">
+            </div>
+        </section>
+
+        <!-- ── Investigación ── -->
+        <section id="about" class="border-t border-neutral-100 gradual-blur-wrap">
+            <div id="gb-about" class="gb-bottom" style="height:5rem;"></div>
+            <div class="max-w-6xl mx-auto px-6 md:px-10 py-24 md:py-32 grid md:grid-cols-12 gap-12">
+                <div class="md:col-span-4">
+                    <h2 class="blur-title text-3xl md:text-4xl font-thin leading-tight tracking-tight">
+                        Un sector en<br>crecimiento constante.
+                    </h2>
+                </div>
+                <div class="md:col-span-8 space-y-10">
+                    <p class="br text-lg font-extralight text-neutral-500 leading-relaxed max-w-xl">
+                        La hostelería representa una parte esencial de nuestra cultura. Analizamos las mejores plataformas para crear una experiencia que combine confianza, velocidad y sencillez.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-neutral-100">
+                        <div class="br" style="--br-delay:0ms">
+                            <p class="text-2xl font-thin">Uber Eats</p>
+                            <p class="text-xs font-light text-neutral-400 mt-2 tracking-wide">Recomendaciones</p>
+                        </div>
+                        <div class="br" style="--br-delay:100ms">
+                            <p class="text-2xl font-thin">TheFork</p>
+                            <p class="text-xs font-light text-neutral-400 mt-2 tracking-wide">Reservas</p>
+                        </div>
+                        <div class="br" style="--br-delay:200ms">
+                            <p class="text-2xl font-thin">Tripadvisor</p>
+                            <p class="text-xs font-light text-neutral-400 mt-2 tracking-wide">Reseñas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Proceso ── -->
+        <section id="process" class="bg-neutral-50 py-24 md:py-32 gradual-blur-wrap">
+            <div id="gb-process-top" class="gb-top" style="height:5rem;"></div>
+            <div id="gb-process-bot" class="gb-bottom" style="height:5rem;"></div>
+            <div class="max-w-6xl mx-auto px-6 md:px-10">
+                <div class="grid md:grid-cols-3 gap-16">
+                    <div class="br text-center" style="--br-delay:0ms">
+                        <div class="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center mx-auto mb-6 text-sm font-light">1</div>
+                        <h3 class="text-xl font-light mb-4">Busca</h3>
+                        <p class="text-sm text-neutral-500 font-extralight leading-relaxed">Filtra por tipo de cocina, cercanía o valoración real de otros usuarios.</p>
+                    </div>
+                    <div class="br text-center" style="--br-delay:150ms">
+                        <div class="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center mx-auto mb-6 text-sm font-light">2</div>
+                        <h3 class="text-xl font-light mb-4">Disfruta</h3>
+                        <p class="text-sm text-neutral-500 font-extralight leading-relaxed">Realiza tu pedido o reserva tu mesa directamente desde la interfaz.</p>
+                    </div>
+                    <div class="br text-center" style="--br-delay:300ms">
+                        <div class="w-12 h-12 rounded-full border border-neutral-200 flex items-center justify-center mx-auto mb-6 text-sm font-light">3</div>
+                        <h3 class="text-xl font-light mb-4">Verifica</h3>
+                        <p class="text-sm text-neutral-500 font-extralight leading-relaxed">Escanea el código QR en el local para dejar una reseña auténtica.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Características ── -->
+        <section id="features" class="border-t border-neutral-100">
+            <div class="max-w-6xl mx-auto px-6 md:px-10 py-24 md:py-32 grid md:grid-cols-2 gap-20 items-start">
+                <div class="md:sticky md:top-24">
+                    <h2 class="blur-title text-3xl md:text-5xl font-thin tracking-tight leading-tight">
+                        Una app pensada<br>para ahorrar tiempo.
+                    </h2>
+                    <p class="br mt-6 text-neutral-500 font-extralight max-w-sm">
+                        Hemos eliminado el ruido visual para que te centres en lo que importa: encontrar tu próxima comida favorita.
+                    </p>
+                </div>
+                <div class="divide-y divide-neutral-100">
+                    <div class="br py-8 flex gap-8" style="--br-delay:0ms">
+                        <span class="text-xs font-light text-neutral-300 pt-2">01</span>
+                        <div>
+                            <h3 class="text-xl font-light">Búsqueda rápida</h3>
+                            <p class="mt-2 text-sm font-extralight text-neutral-500 leading-relaxed max-w-sm">Encuentra restaurantes cerca en segundos con filtros inteligentes.</p>
+                        </div>
+                    </div>
+                    <div class="br py-8 flex gap-8" style="--br-delay:120ms">
+                        <span class="text-xs font-light text-neutral-300 pt-2">02</span>
+                        <div>
+                            <h3 class="text-xl font-light">Recomendaciones IA</h3>
+                            <p class="mt-2 text-sm font-extralight text-neutral-500 leading-relaxed max-w-sm">Sugerencias basadas en tus gustos reales y pedidos anteriores.</p>
+                        </div>
+                    </div>
+                    <div class="br py-8 flex gap-8" style="--br-delay:240ms">
+                        <span class="text-xs font-light text-neutral-300 pt-2">03</span>
+                        <div>
+                            <h3 class="text-xl font-light">Reseñas verificadas</h3>
+                            <p class="mt-2 text-sm font-extralight text-neutral-500 leading-relaxed max-w-sm">Sistema mediante QR: solo pueden opinar quienes realmente han consumido.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Vídeo Funcionamiento ── -->
+        <section class="border-t border-neutral-100 bg-neutral-50/30">
+            <div class="max-w-6xl mx-auto px-6 md:px-10 py-20 md:py-28 flex flex-col items-center">
+                <p class="br text-xs font-light tracking-[0.2em] uppercase text-neutral-400 mb-4">Funcionamiento</p>
+                <h2 class="blur-title text-3xl md:text-5xl font-thin tracking-tight leading-tight text-center mb-12">
+                    Míralo en acción.
+                </h2>
+                <div class="br w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl">
+                    <div style="position:relative;padding-top:56.25%;">
+                        <iframe
+                            src="https://drive.google.com/file/d/1J65skO-LFvkhMEZmSeXAUKjaVkV8-nu_/preview?autoplay=1&loop=1"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
+                            allow="autoplay; fullscreen"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+                <!-- ── Tecnología ── -->
+        <section id="tech" class="bg-neutral-900 text-white gradual-blur-wrap">
+            <div id="gb-tech-top" class="gb-top" style="height:5rem;"></div>
+            <div class="max-w-6xl mx-auto px-6 md:px-10 py-24 md:py-32 grid md:grid-cols-2 gap-16">
+                <div>
+                    <h2 class="blur-title text-3xl md:text-5xl font-thin tracking-tight leading-tight">
+                        Construido con Swift.<br>
+                        <span class="text-neutral-500">Nativo en iOS.</span>
+                    </h2>
+                </div>
+                <div class="space-y-8 text-neutral-300 font-extralight leading-relaxed">
+                    <p class="br" style="--br-delay:0ms">Desarrollada con Swift y Xcode, utilizando tecnologías oficiales de Apple para garantizar el mejor rendimiento y estabilidad.</p>
+                    <p class="br" style="--br-delay:120ms">Arquitectura modular que permite una evolución constante de la herramienta, adaptándose a las necesidades de la hostelería moderna.</p>
+                    <p class="br" style="--br-delay:240ms">La integración con <span class="text-leaf">Mapas y Localización</span> asegura una experiencia de usuario fluida y precisa en todo momento.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── App Store ── -->
+        <section class="border-t border-neutral-100">
+            <div class="max-w-6xl mx-auto px-6 md:px-10 py-24 md:py-32 flex flex-col md:flex-row items-center justify-between gap-12">
+                <div>
+                    <p class="br text-xs font-light tracking-[0.2em] uppercase text-neutral-400 mb-4">Disponible en</p>
+                    <h2 class="blur-title text-3xl md:text-5xl font-thin tracking-tight leading-tight">
+                        Descárgala gratis<br>
+                        <span class="text-leaf">en el App Store.</span>
+                    </h2>
+                    <p class="br mt-6 text-neutral-500 font-extralight max-w-sm leading-relaxed">
+                        Disponible para iPhone. Descarga Prime Foodist y empieza a pedir con total comodidad.
+                    </p>
+                    <a class="br inline-block mt-8 hover:opacity-70 transition" href="https://www.apple.com/app-store/" target="_blank">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/App_Store_%28iOS%29.svg/250px-App_Store_%28iOS%29.svg.png" alt="Descargar en el App Store" class="h-14 w-auto">
+                    </a>
+                </div>
+                <div class="flex items-center gap-10 text-center">
+                    <div class="br" style="--br-delay:0ms">
+                        <p class="text-4xl font-thin">iOS 16+</p>
+                        <p class="text-xs font-light text-neutral-400 mt-2 tracking-wide">Versión mínima</p>
+                    </div>
+                    <div class="h-12 w-px bg-neutral-100"></div>
+                    <div class="br" style="--br-delay:100ms">
+                        <p class="text-4xl font-thin">Gratis</p>
+                        <p class="text-xs font-light text-neutral-400 mt-2 tracking-wide">Sin coste inicial</p>
+                    </div>
+                    <div class="h-12 w-px bg-neutral-100"></div>
+                    <div class="br" style="--br-delay:200ms">
+                        <p class="text-4xl font-thin">ES</p>
+                        <p class="text-xs font-light text-neutral-400 mt-2 tracking-wide">Disponible en España</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── CTA Final ── -->
+        <section id="download" class="border-t border-neutral-100 bg-neutral-50/50">
+            <div class="max-w-4xl mx-auto px-6 md:px-10 py-32 text-center">
+                <img class="br h-10 mx-auto mb-8" src="https://lh3.googleusercontent.com/d/14i6nHz3QhwcJXpfDAPT2Z4VP2Yv5t5Ff" alt="Logo">
+                <h2 class="blur-title text-4xl md:text-6xl font-thin tracking-tight leading-tight">Empieza a disfrutar.</h2>
+                <p class="br mt-6 text-lg font-extralight text-neutral-500 max-w-md mx-auto">
+                    Próximamente disponible en App Store. Únete a la lista de espera.
+                </p>
+                <form class="br mt-10 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                    <input type="email" placeholder="tu@email.com" class="flex-1 px-6 py-3 rounded-full border border-neutral-200 bg-white text-sm font-light focus:outline-none focus:border-neutral-900 transition" required>
+                    <button type="submit" class="px-7 py-3 rounded-full bg-neutral-900 text-white text-sm font-light hover:bg-neutral-700 transition">Avísame</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-neutral-100">
+        <div class="max-w-6xl mx-auto px-6 md:px-10 py-10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-neutral-400">
+            <div class="flex items-center gap-2 tracking-[0.2em] uppercase">
+                <img src="https://lh3.googleusercontent.com/d/14i6nHz3QhwcJXpfDAPT2Z4VP2Yv5t5Ff" alt="Logo" class="h-5 w-auto grayscale opacity-50 hover:opacity-100 transition">
+                <span>Prime Foodist</span>
+            </div>
+            <p>© 2024 Prime Foodist · Proyecto 2DAM</p>
+        </div>
+    </footer>
+
+    <script>
+    (function () {
+
+        /* ─────────────────────────────────────────────
+           1.  BlurText para el H1 del hero (palabra a palabra)
+        ───────────────────────────────────────────── */
+        const heroLines = [
+            { text: 'Pedir comida,', cls: '' },
+            { text: 'simplemente.',  cls: 'text-leaf' }
+        ];
+        const h1 = document.getElementById('hero-h1');
+        let wi = 0;
+        heroLines.forEach((line, li) => {
+            line.text.split(' ').forEach((word, wj, arr) => {
+                const s = document.createElement('span');
+                s.textContent = word;
+                s.className = 'bw' + (line.cls ? ' ' + line.cls : '');
+                s.dataset.wi = wi++;
+                h1.appendChild(s);
+                if (wj < arr.length - 1) h1.appendChild(document.createTextNode('\u00A0'));
+            });
+            if (li < heroLines.length - 1) h1.appendChild(document.createElement('br'));
+        });
+
+        /* ─────────────────────────────────────────────
+           2.  BlurText para todos los .blur-title (título por título, palabra a palabra)
+        ───────────────────────────────────────────── */
+        document.querySelectorAll('.blur-title').forEach(el => {
+            // Recoger el HTML tal cual, separar palabras conservando <br> y <span>
+            // Estrategia: iterar nodos hijos del elemento
+            const nodes = Array.from(el.childNodes);
+            el.innerHTML = '';
+            nodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    node.textContent.split(/(\s+)/).forEach(part => {
+                        if (!part) return;
+                        if (/^\s+$/.test(part)) {
+                            el.appendChild(document.createTextNode(part));
+                        } else {
+                            const s = document.createElement('span');
+                            s.className = 'bw';
+                            s.textContent = part;
+                            el.appendChild(s);
+                        }
+                    });
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'BR') {
+                    el.appendChild(document.createElement('br'));
+                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SPAN') {
+                    // span de color: procesar su texto interno igual
+                    node.textContent.split(/(\s+)/).forEach(part => {
+                        if (!part) return;
+                        if (/^\s+$/.test(part)) {
+                            el.appendChild(document.createTextNode(part));
+                        } else {
+                            const s = document.createElement('span');
+                            s.className = 'bw ' + node.className;
+                            s.textContent = part;
+                            el.appendChild(s);
+                        }
+                    });
+                } else {
+                    el.appendChild(node.cloneNode(true));
+                }
+            });
+        });
+
+        /* ─────────────────────────────────────────────
+           3.  IntersectionObserver: dispara blur-words (.bw)
+        ───────────────────────────────────────────── */
+        const WORD_DELAY = 110; // ms entre palabras
+
+        function animateBlurWords(container, baseDelay = 0) {
+            const words = container.querySelectorAll('.bw');
+            words.forEach((w, i) => {
+                setTimeout(() => w.classList.add('in'), baseDelay + i * WORD_DELAY);
+            });
+        }
+
+        // Hero H1: se activa nada más cargar (ya está en viewport)
+        const h1Observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { animateBlurWords(h1, 100); h1Observer.disconnect(); }
+            });
+        }, { threshold: 0.1 });
+        h1Observer.observe(h1);
+
+        // Todos los .blur-title en secciones de scroll
+        document.querySelectorAll('.blur-title').forEach(el => {
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { animateBlurWords(el); obs.disconnect(); }
+                });
+            }, { threshold: 0.15 });
+            obs.observe(el);
+        });
+
+        /* ─────────────────────────────────────────────
+           4.  BlurReveal para bloques (.br)
+        ───────────────────────────────────────────── */
+        document.querySelectorAll('.br').forEach(el => {
+            const baseDelay = parseInt(getComputedStyle(el).getPropertyValue('--br-delay')) || 0;
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        setTimeout(() => {
+                            el.style.animationDelay = '0ms';
+                            el.classList.add('in');
+                        }, baseDelay);
+                        obs.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.1 });
+            obs.observe(el);
+        });
+
+        /* ─────────────────────────────────────────────
+           5.  GradualBlur: genera capas de backdrop-filter
+               en los contenedores .gb-top / .gb-bottom
+        ───────────────────────────────────────────── */
+        function buildGradualBlur(container, position, opts) {
+            const { divCount = 6, strength = 2, curve = 'bezier', height = '5rem', bgColor = 'transparent' } = opts || {};
+            container.style.height = height;
+            container.style.position = 'absolute';
+            container.style.left = '0'; container.style.right = '0';
+            container.style.pointerEvents = 'none'; container.style.zIndex = '10';
+            if (position === 'top') container.style.top = '0';
+            else container.style.bottom = '0';
+
+            const dir = position === 'top' ? 'to top' : 'to bottom';
+            const inc = 100 / divCount;
+
+            for (let i = 1; i <= divCount; i++) {
+                let p = i / divCount;
+                // bezier smooth step
+                p = p * p * (3 - 2 * p);
+                const blurVal = (Math.pow(2, p * 4) * 0.0625 * strength).toFixed(3);
+
+                const p1 = ((inc * i - inc)).toFixed(1);
+                const p2 = (inc * i).toFixed(1);
+                const p3 = Math.min((inc * i + inc), 100).toFixed(1);
+                const p4 = Math.min((inc * i + inc * 2), 100).toFixed(1);
+
+                let grad = `transparent ${p1}%, black ${p2}%`;
+                if (parseFloat(p3) <= 100) grad += `, black ${p3}%`;
+                if (parseFloat(p4) <= 100) grad += `, transparent ${p4}%`;
+
+                const layer = document.createElement('div');
+                layer.style.cssText = `
+                    position:absolute;inset:0;
+                    mask-image:linear-gradient(${dir},${grad});
+                    -webkit-mask-image:linear-gradient(${dir},${grad});
+                    backdrop-filter:blur(${blurVal}rem);
+                    -webkit-backdrop-filter:blur(${blurVal}rem);
+                `;
+                container.appendChild(layer);
+            }
+        }
+
+        // Aplicar a las secciones con fondo blanco (gb-bottom: desvanece hacia el borde)
+        const gbTargets = [
+            { id: 'gb-about',       pos: 'bottom', bg: 'white' },
+            { id: 'gb-process-top', pos: 'top',    bg: '#f9fafb' },
+            { id: 'gb-process-bot', pos: 'bottom', bg: '#f9fafb' },
+            { id: 'gb-tech-top',    pos: 'top',    bg: '#171717' },
+        ];
+        gbTargets.forEach(({ id, pos, bg }) => {
+            const el = document.getElementById(id);
+            if (el) buildGradualBlur(el, pos, { strength: 1.5, divCount: 6, height: '4rem', bgColor: bg });
+        });
+
+    })();
+    </script>
+</body>
+</html>
