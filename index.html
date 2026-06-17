@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prime Foodist — Pedir comida, simplemente.</title>
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/14i6nHz3QhwcJXpfDAPT2Z4VP2Yv5t5Ff">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -295,6 +296,28 @@
             <p>© 2024 Prime Foodist · Proyecto 2DAM</p>
         </div>
     </footer>
+    <!-- Banner de Cookies -->
+<div id="cookie-banner" class="fixed bottom-6 left-6 right-6 md:left-auto md:right-10 md:max-w-sm z-[300] bg-white/90 backdrop-blur-xl border border-neutral-100 p-6 rounded-3xl shadow-2xl transition-all duration-700 translate-y-24 opacity-0 pointer-events-none">
+    <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div>
+            <h4 class="text-sm font-light text-neutral-900 mb-1">Experiencia y Cookies</h4>
+            <p class="text-xs font-extralight text-neutral-500 leading-relaxed mb-4">
+                Utilizamos cookies para mejorar la navegación y entender cómo usas nuestra app. Si sigues aquí, asumimos que te parece bien.
+            </p>
+            <div class="flex gap-2">
+                <button id="accept-cookies" class="px-5 py-2 bg-neutral-900 text-white text-[10px] uppercase tracking-wider font-light rounded-full hover:bg-neutral-700 transition">
+                    Aceptar
+                </button>
+                <button id="close-cookies" class="px-5 py-2 border border-neutral-200 text-neutral-500 text-[10px] uppercase tracking-wider font-light rounded-full hover:border-neutral-900 hover:text-neutral-900 transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script>
     (function () {
@@ -467,6 +490,29 @@
         });
 
     })();
+        /* ─────────────────────────────────────────────
+   6.  Lógica de Cookies
+───────────────────────────────────────────── */
+const banner = document.getElementById('cookie-banner');
+const acceptBtn = document.getElementById('accept-cookies');
+const closeBtn = document.getElementById('close-cookies');
+
+// Comprobar si ya aceptó
+if (!localStorage.getItem('prime-cookies-accepted')) {
+    // Mostrar con un ligero retraso para que no interrumpa el hero
+    setTimeout(() => {
+        banner.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+    }, 1500);
+}
+
+acceptBtn.addEventListener('click', () => {
+    localStorage.setItem('prime-cookies-accepted', 'true');
+    banner.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+});
+
+closeBtn.addEventListener('click', () => {
+    banner.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+});
     </script>
 </body>
 </html>
